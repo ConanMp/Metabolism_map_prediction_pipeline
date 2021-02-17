@@ -8,6 +8,7 @@ Created on Thu Sep 24 14:08:41 2020
 import os
 import json
 import sygma
+import argparse
 from rdkit import Chem
 from rdkit.Chem import AllChem
 from rdkit.Chem import Draw
