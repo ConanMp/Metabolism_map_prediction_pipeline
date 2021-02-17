@@ -66,7 +66,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("SMILES", help="the SMILES string of the compound to predict metabolism")
     parser.add_argument("Name", help="the name of the compound to predict metabolism, it will be use to name the metabolism map")
-    parser.add_argument("Output_dir", help="The path to the output directory whee the metabolisme map will be save", default=False)
+    parser.add_argument("--Output_dir", help="The path to the output directory whee the metabolisme map will be save", default=False)
     scenario_AHA = sygma.Scenario([
         [sygma.ruleset['phase1'], 2],
         [sygma.ruleset['phase2'], 2]])
@@ -76,20 +76,22 @@ def main():
     compound_directory=args.Output_dir
     compound_name=args.Name
     img_dir_output=None
+    metabolism_map_output=None
 
     if compound_directory:
         if compound_directory[len(compound_directory)-1]!='/':
             compound_directory=compound_directory+'/'
         if not os.path.exists(compound_directory+compound_name):
             os.makedirs(compound_directory+compound_name+"/Mol_img/")
-            img_dir_output=compound_directory+compound_name+"/Mol_img/"
+        metabolism_map_output=compound_directory+compound_name+"/"+compound_name+".json"
+        img_dir_output=compound_directory+compound_name+"/Mol_img/"
     else:
         if not os.path.exists(compound_name):
             os.makedirs(compound_name+"/Mol_img/")
-            img_dir_output=compound_name+"/Mol_img/"
+        metabolism_map_output=compound_name+"/"+compound_name+".json"
+        img_dir_output=compound_name+"/Mol_img/"
 
     metabolism_map=predict_metabolite(compound_smiles, scenario_AHA, img_dir_output)
-    metabolism_map_output=compound_directory+compound_name+"/"+compound_name+".json"
     write_new_json(metabolism_map, metabolism_map_output)
 
 main()
